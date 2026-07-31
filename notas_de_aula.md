@@ -15,6 +15,7 @@
     <img width="502" height="216" alt="image" src="https://github.com/user-attachments/assets/62cc4b11-57a6-4f68-bd5f-5fe0f87f0706" />
 
   - Exemplo Tabela Física:
+      ```sql
         /* Lógico_1: */
 
     - CREATE TABLE Funcionario (
@@ -27,4 +28,5 @@
         Numero INT,
         Complemento VARCHAR(255)
       );
+      ```
 
