@@ -14,11 +14,11 @@
     - Exemplo Tabela Entidade Relacionamento:
     <img width="502" height="216" alt="image" src="https://github.com/user-attachments/assets/62cc4b11-57a6-4f68-bd5f-5fe0f87f0706" />
 
-  - Exemplo Tabela Física:
+    - Exemplo Tabela Física:
       ```sql
         /* Lógico_1: */
 
-    - CREATE TABLE Funcionario (
+      CREATE TABLE Funcionario (
         CPF CHAR(14) PRIMARY KEY,
         Nome VARCHAR(100),
         Salario DECIMAL(10,2),
@@ -29,4 +29,8 @@
         Complemento VARCHAR(255)
       );
       ```
+      ///////////////////////////
+
+      <img width="662" height="335" alt="image" src="https://github.com/user-attachments/assets/a3b7c1f9-d112-4865-9512-3d77a82d913d" />
+
 
