@@ -88,13 +88,23 @@ SELECT l.titulo, l.ano_publicacao
 FROM livro AS l
 WHERE l.titulo LIKE "%Dom%";
 
--- Recuperado as informações
-SELECT * FROM autor;
-SELECT * FROM livro;
-
 SELECT *
 FROM livro AS l
 JOIN autor AS a ON l.fk_id_autor = a.id_autor;
+
+SELECT l.titulo AS "Título", 
+	   l.ano_publicacao AS "Ano de publicação", 
+	   A.nome AS "Autor", 
+	   A.nacionalidade AS "Nacionalidade", 
+       CONCAT(A.nome, "/", A.nacionalidade) AS "Autor/Nacionalidade",
+       e.nome AS "Editora"
+FROM Livro AS l
+JOIN Autor AS a ON l.fk_id_autor = A.id
+JOIN Editora AS e ON l.fk_id_editora = e.id_editora;
+
+-- Recuperado as informações
+SELECT * FROM autor;
+SELECT * FROM livro;
 
 SHOW TABLES;
 ```
