@@ -1,3 +1,6 @@
+# Aula 2 - 07/08/2026
+- Praticamos os comandos básicos de sql: https://github.com/JuuJaoBRzao/Implementacao_Banco_Dados/blob/main/Exemplos_Aula/Exemplo_1.sql
+
 # Aula 1 - 31/07/2026
 
 * Revisão: 
