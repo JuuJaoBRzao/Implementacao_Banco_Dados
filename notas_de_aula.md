@@ -1,3 +1,104 @@
+# Aula 3 - 14/08/2026
+- Banco de dados para atividade: https://github.com/Herysson/Implementacao-de-Banco-de-Dados/blob/main/EMPRESA.sql
+https://github.com/Herysson/Implementacao-de-Banco-de-Dados/blob/main/MICROSOFT.sql
+
+- Práticas SQL usando esse banco:
+```sql
+-- DISTINCT
+SELECT DISTINCT F.Salario
+FROM FUNCIONARIO AS F;
+
+SELECT DISTINCT F.Sexo
+FROM FUNCIONARIO AS F;
+
+-- WHERE
+SELECT *
+FROM FUNCIONARIO AS F
+WHERE F.Pnome = 'Carlos';
+
+SELECT *
+FROM FUNCIONARIO AS F
+WHERE F.Sexo = 'M' 
+AND F.Salario >= 30000;
+
+-- OR
+SELECT *
+FROM FUNCIONARIO AS F
+WHERE F.Endereco LIKE '%São Paulo%'
+OR F.Endereco LIKE '%Curitiba%';
+
+-- NOT
+SELECT *
+FROM FUNCIONARIO AS F
+WHERE F.Endereco NOT LIKE '%SP%';
+
+-- ORDER BY
+SELECT 
+	F.Pnome AS 'Nome',
+	F.Unome AS 'Sobrenome',
+	F.Salario AS 'Salario',
+	(F.Salario + COALESCE(F.Bonus, 0)) * 12 AS 'CustoAnual' 
+	-- A função COALESCE no SQL avalia uma lista de valores na 
+	-- ordem informada e retorna o primeiro valor não nulo (NOT NULL).
+FROM FUNCIONARIO AS F
+ORDER BY (F.Salario + COALESCE(F.Bonus,0)) * 12 DESC;
+
+-- NULL
+SELECT *
+FROM FUNCIONARIO AS F
+WHERE F.Cpf_supervisor IS NULL
+
+-- TOP - MySQL LIMIT
+SELECT TOP 3 *
+FROM FUNCIONARIO AS F
+ORDER BY F.Salario DESC;
+
+-- MIN() MAX()
+SELECT 
+	MIN(F.Salario) AS 'Menor Salario',
+	MAX(F.Salario) AS 'Maior Salario'
+FROM FUNCIONARIO AS F;
+
+-- Outro jeito
+DECLARE @salario_min DECIMAL(10,2);
+SET @salario_min = (SELECT MIN(Salario) FROM FUNCIONARIO);
+PRINT @salario_min;
+
+SELECT *
+FROM FUNCIONARIO AS F
+WHERE F.Salario = @salario_min;
+
+-- COUNT()
+SELECT COUNT(F.Cpf) 
+FROM FUNCIONARIO AS F;
+
+SELECT COUNT(D.Nome_dependente)
+FROM DEPENDENTE AS D;
+
+SELECT
+	(SELECT COUNT(F.Cpf) FROM FUNCIONARIO AS F) + 
+	(SELECT COUNT(D.Nome_dependente) FROM DEPENDENTE AS D)
+	AS 'QtdePessoas';
+
+-- AVG()
+SELECT AVG(F.Salario)
+FROM FUNCIONARIO AS F
+
+SELECT *
+FROM FUNCIONARIO AS F
+WHERE F.Salario < (SELECT AVG(Salario) FROM FUNCIONARIO)
+ORDER BY F.Salario ASC;
+
+-- SUM()
+SELECT SUM(F.Salario) * 12 AS CustoAnual
+FROM FUNCIONARIO AS F;
+
+-- LIKE
+SELECT *
+FROM FUNCIONARIO AS F
+WHERE F.Datanasc LIKE '%72%';
+```
+
 # Aula 2 - 07/08/2026
 - Praticamos os comandos básicos de sql:
 ```sql
