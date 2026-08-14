@@ -1,5 +1,6 @@
 # Aula 3 - 14/08/2026
 - Banco de dados para atividade: https://github.com/Herysson/Implementacao-de-Banco-de-Dados/blob/main/EMPRESA.sql
+
 https://github.com/Herysson/Implementacao-de-Banco-de-Dados/blob/main/MICROSOFT.sql
 
 - Práticas SQL usando esse banco:
