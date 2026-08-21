@@ -1,3 +1,144 @@
+# Aula 4 - 21/08/2026
+- Mais praticas usando o mesmo banco:
+```sql
+use EMPRESA;
+
+-- IN
+SELECT *
+FROM FUNCIONARIO 
+WHERE Salario IN (25000, 30000);
+
+
+SELECT F.Pnome, T.Pnr
+FROM TRABALHA_EM AS T, FUNCIONARIO AS F
+WHERE 
+	F.Cpf = T.FCpf
+	AND F.Pnome != 'Fernando'
+	AND T.Pnr IN (
+		SELECT Pnr 
+		FROM TRABALHA_EM 
+		WHERE Fcpf = 
+			(SELECT Cpf
+			FROM FUNCIONARIO
+			WHERE Pnome = 'Fernando')
+			)
+ORDER BY T.Pnr ASC;
+
+
+-- BETWEEN
+SELECT *
+FROM FUNCIONARIO AS F
+WHERE 
+	F.Dnr = 5
+	AND F.Salario BETWEEN 30000 AND 40000;
+
+
+-- INNER JOIN
+SELECT F.PNome, F.UNome, F.Endereco, D.Dnome
+FROM FUNCIONARIO AS F
+
+INNER JOIN DEPARTAMENTO AS D
+ON F.Dnr = D.Dnumero
+
+WHERE F.Dnr = 5;
+
+
+-- Listar os funcionarios que trabalham no desenvolvimento do produto x
+SELECT F.Pnome, F.Minicial, F.Unome, T.Horas, P.Projnome
+FROM TRABALHA_EM AS T
+
+INNER JOIN PROJETO AS P
+ON T.Pnr = P.Projnumero
+
+INNER JOIN FUNCIONARIO AS F
+ON T.Fcpf = F.Cpf
+
+WHERE P.Projnome = 'ProdutoX'
+ORDER BY T.Horas ASC;
+
+
+-- Numero do departamento que controla os projetos localizados em Maua
+SELECT 
+	D.Dnome, 
+	P.Projnome, 
+	P.Projlocal, 
+	D.Cpf_gerente, 
+	F.Unome, 
+	F.Endereco
+FROM DEPARTAMENTO AS D
+
+JOIN PROJETO AS P
+ON P.Dnum = D.Dnumero
+
+JOIN FUNCIONARIO AS F
+ON F.Cpf = D.Cpf_gerente
+
+WHERE P.Projlocal = 'Mauá';
+
+
+-- LEFT JOIN
+SELECT *
+FROM FUNCIONARIO AS F
+
+LEFT JOIN DEPARTAMENTO AS D
+ON F.Dnr = D.Dnumero
+
+SELECT *
+FROM DEPARTAMENTO AS D
+
+LEFT JOIN FUNCIONARIO AS F
+ON D.Dnumero = F.Dnr
+
+WHERE F.Cpf IS NULL;
+
+
+-- FULL JOIN
+SELECT * 
+FROM FUNCIONARIO AS F
+
+FULL JOIN DEPARTAMENTO AS D
+ON F.Dnr = D.Dnumero
+
+WHERE
+	D.Dnumero IS NULL
+	OR F.Cpf IS NULL;
+
+
+-- SELF JOIN
+SELECT T1.Pnome, T2.Cpf
+FROM FUNCIONARIO AS T1
+
+JOIN FUNCIONARIO AS T2
+ON T1.Cpf = T2.Cpf
+
+WHERE T2.Cpf_supervisor IS NOT NULL;
+
+SELECT 
+	F.Pnome AS 'Funcionario',
+	S.Unome AS 'Supervisor'
+FROM FUNCIONARIO AS F
+
+JOIN FUNCIONARIO AS S
+ON F.Cpf_supervisor = S.Cpf_supervisor
+ORDER BY 'Supervisor';
+
+
+-- UNION
+SELECT 
+	F.Pnome AS 'Nome',
+	F.Sexo AS 'Sexo',
+	F.Datanasc AS 'Data'
+FROM FUNCIONARIO AS F
+
+UNION
+
+SELECT 
+	D.Nome_dependente AS 'Nome',
+	D.Sexo AS 'Sexo',
+	D.Datanasc AS 'Data'
+FROM DEPENDENTE AS D;
+```
+
 # Aula 3 - 14/08/2026
 - Banco de dados para atividade: https://github.com/Herysson/Implementacao-de-Banco-de-Dados/blob/main/EMPRESA.sql
 
