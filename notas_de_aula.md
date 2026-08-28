@@ -124,6 +124,56 @@ WHERE Salario <> ANY (
 	WHERE D.Dnome = 'Administração'
 )
 ```
+- Mais alguns comandos:
+
+```sql
+--DECLARE
+DECLARE --@nome VARCHAR(100),
+		@idade INT,
+		--@salario DECIMAL(10,2),
+		@data DATE;
+SET @nome = 'Herysson R. Figueiredo';
+SET @idade = 38;
+SET @salario = 2400.00;
+SET @data = GETDATE();
+PRINT 'OLÁ PUTÃO, TEU NOME É: ' + @nome 
+	+ ', Idade: ' + CAST(@idade AS VARCHAR(10));
+SELECT
+	@nome AS 'Nome',
+	@idade AS 'Idade',
+	@salario AS 'Grana',
+	@data AS 'Data de hoje';
+
+-- ///
+DECLARE @nomeDpt VARCHAR(20);
+
+SELECT @nomeDpt = Dnome
+FROM DEPARTAMENTO AS D
+WHERE D.Dnumero = 4
+
+PRINT 'Departamento' + @nomeDpt;
+
+--- /// 
+DECLARE @salario DECIMAL(10,2),
+		@novo_salario DECIMAL(10,2),
+		@nome VARCHAR(100);
+SET @nome = 'Jennifer';
+SELECT @salario = F.Salario
+FROM FUNCIONARIO AS F
+WHERE F.Pnome = @nome;
+SET @novo_salario = @salario * 1.1;
+PRINT 'Salario: ' + CAST(@salario AS VARCHAR(10))
+PRINT 'Novo Salario: ' + CAST(@novo_salario AS VARCHAR(10))
+
+-- ///
+DECLARE @dataJennifer DATE
+
+SELECT @dataJennifer = Datanasc
+FROM FUNCIONARIO
+WHERE Pnome = 'Jennifer'
+
+PRINT DATEDIFF(YEAR, @dataJennifer, GETDATE());
+```
 
 # Aula 4 - 21/08/2026
 - Mais praticas usando o mesmo banco:
