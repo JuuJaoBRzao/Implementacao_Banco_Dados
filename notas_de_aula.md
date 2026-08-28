@@ -1,3 +1,130 @@
+# Aula 5 - 28/08/2026
+- Terminando a lista de comandos dos slides:
+
+```sql
+use EMPRESA;
+
+-- UNION
+SELECT P.Projlocal AS 'Local'
+FROM PROJETO AS P
+
+UNION
+
+SELECT L.Dlocal AS 'Local'
+FROM LOCALIZACAO_DEP AS L;
+
+-- EXCEPT
+SELECT F.Cpf, F.Pnome
+FROM FUNCIONARIO AS F
+
+EXCEPT
+
+SELECT D.Cpf_gerente, F.Pnome
+FROM DEPARTAMENTO AS D
+
+JOIN FUNCIONARIO AS F
+ON D.Cpf_gerente = F.Cpf
+
+-- INTERSECT
+SELECT Cpf
+FROM FUNCIONARIO
+
+INTERSECT
+
+SELECT Cpf_supervisor
+FROM FUNCIONARIO
+
+-- GROUP BY
+SELECT COUNT(F.Cpf) AS 'Qtd_Cpf', F.Sexo
+FROM FUNCIONARIO AS F
+GROUP BY F.Sexo;
+
+-- ///
+SELECT COUNT(F.Cpf) AS 'Qtd_Cpf', D.Dnome
+FROM FUNCIONARIO AS F
+
+JOIN DEPARTAMENTO AS D
+ON F.Dnr = D.Dnumero
+
+GROUP BY D.Dnome;
+
+-- ///
+SELECT SUM(F.Salario) AS 'Soma Salario', D.Dnome
+FROM FUNCIONARIO AS F
+
+JOIN DEPARTAMENTO AS D
+ON F.Dnr = D.Dnumero
+
+GROUP BY D.Dnome;
+
+-- ///
+SELECT AVG(T.Horas) AS 'M Hrs', P.Projnome
+FROM TRABALHA_EM AS T
+
+JOIN PROJETO AS P
+ON T.Pnr = P.Projnumero
+
+GROUP BY P.Projnome
+
+-- ///
+SELECT MAX(F.Salario) AS 'Salario', D.Dnome
+FROM FUNCIONARIO AS F
+
+JOIN DEPARTAMENTO AS D
+ON F.Dnr = D.Dnumero
+
+GROUP BY D.Dnome
+
+-- HAVING
+SELECT COUNT(F.Cpf) AS 'Func', D.Dnome
+FROM FUNCIONARIO AS F
+
+JOIN DEPARTAMENTO AS D
+ON F.Dnr = D.Dnumero
+
+GROUP BY D.Dnome
+HAVING COUNT(F.Cpf) > 3;
+
+-- ///
+SELECT SUM(T.Horas) AS 'Min Hrs', P.Projnome
+FROM TRABALHA_EM AS T
+
+JOIN PROJETO AS P
+ON T.Pnr = P.Projnumero
+
+GROUP BY P.Projnome
+HAVING SUM(T.Horas) >= 50;
+
+-- EXISTS
+SELECT *
+FROM DEPARTAMENTO AS D
+WHERE EXISTS (
+	SELECT 1
+	FROM PROJETO, DEPARTAMENTO
+	WHERE PROJETO.Dnum = DEPARTAMENTO.Dnumero
+);
+
+-- ANY
+SELECT F.Salario
+FROM FUNCIONARIO AS F
+
+JOIN DEPARTAMENTO AS D
+ON F.Dnr = D.Dnumero
+
+WHERE D.Dnome = 'Administração';
+
+--///
+SELECT Pnome, Salario
+FROM FUNCIONARIO
+WHERE Salario <> ANY (
+	SELECT F.Salario
+	FROM FUNCIONARIO AS F
+	JOIN DEPARTAMENTO AS D
+	ON F.Dnr = D.DnumerO
+	WHERE D.Dnome = 'Administração'
+)
+```
+
 # Aula 4 - 21/08/2026
 - Mais praticas usando o mesmo banco:
 ```sql
