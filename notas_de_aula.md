@@ -1,3 +1,155 @@
+# Aula 6 - 04/09/2026
+```sql
+-- CAST
+GO;
+--DECLARE @nome VARCHAR(100),
+		@salario DECIMAL(10,2);
+SET @nome = 'Jennifer';
+SELECT @salario = F.Salario
+FROM FUNCIONARIO AS F
+WHERE F.Pnome = @nome;
+
+PRINT 'O Funcionário(a) ' 
+	   + @nome 
+	   +' tem um salário de: R$ '
+	   + CAST(@salario AS  VARCHAR(10));
+GO;
+
+-- CONVERT
+--DECLARE @dataNasc DATE;
+--DECLARE @nome VARCHAR(100)
+SET @nome = 'Jennifer'
+
+SELECT @dataNasc = Datanasc
+FROM FUNCIONARIO AS F
+WHERE F.Pnome = @nome;
+
+SELECT CONVERT(VARCHAR(10), @dataNasc, 103) AS DataNascimento;
+
+-- IF/ELSE
+--DECLARE @nome VARCHAR(100)
+DECLARE @salario DECIMAL(10,2)
+DECLARE @salarioMedio DECIMAL(10,2)
+SET @nome = 'Jennifer'
+
+SELECT @salarioMedio = AVG(Salario)
+FROM FUNCIONARIO;
+
+SELECT @salario = F.Salario
+FROM FUNCIONARIO AS F
+WHERE @nome = Pnome;
+
+IF(@salario < @salarioMedio)
+	BEGIN
+	PRINT 'O funcionário(a) '
+	+ @nome
+	+ ' ganha um salario de R$ '
+	+ CAST(@salario AS VARCHAR(100))
+	+ ' e ele esta abaixo da média de R$ '
+	+ CAST(@salarioMedio AS VARCHAR(100));
+	END
+ELSE
+	BEGIN
+	PRINT 'O funcionário(a) '
+	+ @nome
+	+ ' ganha um salario de R$ '
+	+ CAST(@salario AS VARCHAR(100))
+	+ ' e ele esta acima da média de R$ '
+	+ CAST(@salarioMedio AS VARCHAR(100));
+	END;
+
+-- ////////
+DECLARE @anoAtual INT,
+		@anoNasc INT,
+		--@nome VARCHAR(100),
+		--@idade INT;
+SET @nome = 'Jennifer';
+SET @anoAtual = YEAR(GETDATE());
+
+SELECT @anoNasc = YEAR(Datanasc)
+FROM FUNCIONARIO
+WHERE @nome = Pnome;
+SET @idade =@anoAtual - @anoNasc;
+
+IF(@idade <= 55)
+	BEGIN
+	PRINT @nome + ' tem ' 
+		+ CAST(@idade AS VARCHAR(100))  
+		+ 'e está longe da aposentadoria'
+	END
+ELSE IF(@idade > 55 AND @idade <= 60)
+	BEGIN
+	PRINT @nome + ' tem ' 
+		+ CAST(@idade AS VARCHAR(100))  
+		+ 'e está próximo da aposentadoria'
+	END
+ELSE
+	BEGIN
+	PRINT @nome + ' tem ' 
+		+ CAST(@idade AS VARCHAR(100)) 
+		+ 'anos e passou da aposentadoria'
+	END;
+
+--////
+DECLARE @dataNasc DATE,
+		@nome VARCHAR(100),
+		@idade INT;
+SET @nome = 'Fernando';
+
+SELECT @dataNasc = Datanasc
+FROM FUNCIONARIO
+WHERE Pnome = @nome
+
+IF(MONTH(GETDATE()) < MONTH(@dataNasc))
+	SET @idade = DATEDIFF(YEAR, @dataNasc, GETDATE()) -1
+ELSE IF (MONTH(GETDATE()) = MONTH(@dataNasc)) AND DAY(@dataNasc) < DAY(GETDATE())
+	SET @idade = DATEDIFF(YEAR, @dataNasc, GETDATE()) - 1
+ELSE
+	SET @idade = DATEDIFF(YEAR, @dataNasc, GETDATE());
+	
+PRINT @dataNasc
+PRINT @idade
+
+--IIF
+SELECT
+	F.Pnome,
+	F.Unome,
+	F.Salario,
+	IIF(F.Salario < 20000, 'Salario baixo', 'Salario alto') AS 'Categoria'
+FROM FUNCIONARIO AS F;
+
+-- CASE
+SELECT
+	F.Pnome,
+	F.Unome,
+	F.Salario,
+	CASE
+		WHEN F.Salario <= 10000 AND F.Salario > 0 THEN 'Baixo'
+		WHEN F.Salario > 10000 AND F.Salario <= 30000 THEN 'Medio'
+		WHEN F.Salario > 30000 THEN 'Alto'
+		ELSE 'ERRO'
+	END AS 'Categoria'
+
+FROM FUNCIONARIO AS F;
+
+-- WHILE
+DECLARE @contador INT = 0;
+
+WHILE @contador < 10
+BEGIN
+	SET @contador = @contador + 1
+	IF @contador % 2 = 0
+		CONTINUE
+	PRINT 'Contador' + CAST(@contador AS VARCHAR(3));
+END
+
+-- CURSORES
+DECLARE @name VARCHAR(50);
+
+DECLARE cursorFuncionario CURSOR FOR
+SELECT Pnome FROM FUNCIONARIO;
+```
+
 # Aula 5 - 28/08/2026
 - Terminando a lista de comandos dos slides:
 
