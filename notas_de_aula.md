@@ -1,3 +1,169 @@
+# Aula 7 - 11/09/2026
+```sql
+--FUNCTION
+
+CREATE FUNCTION fn_dobro (@Numero INT)
+RETURNS INT
+AS
+BEGIN
+	RETURN @Numero * 2;
+END;
+GO
+
+SELECT dbo.fn_dobro(250) AS Resultado;
+
+SELECT 
+	Pnome,
+	Unome,
+	F.Salario,
+	CAST(dbo.fn_dobro(F.Salario) AS DECIMAL (10,2)) AS 'Dobro'
+FROM FUNCIONARIO AS F
+WHERE F.Pnome = 'Maria';
+
+--////
+DECLARE @menor_salario DECIMAL(10,2);
+
+SELECT @menor_salario = MIN(Salario)
+FROM FUNCIONARIO;
+
+SELECT 
+	Pnome,
+	Unome,
+	F.Salario
+FROM FUNCIONARIO AS F
+WHERE F.Salario > dbo.fn_dobro(@menor_salario);
+
+--////
+CREATE FUNCTION fn_idade (@dataNascimento DATE)
+RETURNS INT
+AS 
+BEGIN
+	DECLARE @idade INT
+
+	SET @idade = DATEDIFF(YEAR, @dataNascimento, GETDATE());
+
+	IF DATEADD(YEAR, @idade, @dataNascimento) > CAST(GETDATE() AS DATE)
+	BEGIN
+		SET @idade = @idade -1;
+	END;
+
+	RETURN @idade;
+END;
+GO
+
+SELECT Pnome,
+	   Unome,
+	   F.Salario,
+	   dbo.fn_idade(F.Datanasc) AS idade
+FROM FUNCIONARIO AS F;
+
+--////
+CREATE FUNCTION fn_TipoDepartamento (@Departamento VARCHAR(50))
+RETURNS TABLE
+AS
+RETURN
+(
+	SELECT F.*
+	FROM FUNCIONARIO AS F
+
+	LEFT JOIN DEPARTAMENTO AS D
+	ON D.Dnumero = F.Dnr
+
+	WHERE D.Dnome = @Departamento
+);
+GO
+
+SELECT *
+FROM dbo.fn_TipoDepartamento('Administração');
+
+--////
+CREATE FUNCTION fn_salarioAnual()
+RETURNS @SalAno TABLE
+(
+	nome_comp VARCHAR(100),
+	salario DECIMAL(10,2),
+	salario_anual DECIMAL(10,2)
+)
+AS 
+BEGIN
+	INSERT INTO @SalAno
+	SELECT
+		CONCAT(F.Pnome, ' ', F.Minicial, ' ', F.Unome),
+		F.Salario,
+		F.Salario * 13 + (F.Salario * 0.3)
+	FROM FUNCIONARIO AS F;
+
+	RETURN;
+END
+GO
+
+SELECT * FROM dbo.fn_salarioAnual();
+
+CREATE PROCEDURE sp_exibe_meu_nome
+AS
+BEGIN
+	PRINT 'Guilherme Gonsalves';
+END
+GO;
+
+EXEC sp_exibe_meu_nome;
+
+--////
+CREATE PROCEDURE sp_aumento(@porcentagem DECIMAL(3,1))
+AS
+BEGIN
+	UPDATE FUNCIONARIO
+	SET Salario = Salario * (1+(@porcentagem)/100)
+END
+GO
+EXEC dbo.sp_aumento @porcentagem = 5;
+
+SELECT * FROM FUNCIONARIO;
+
+EXEC sp_help funcionario;
+
+--////
+CREATE PROCEDURE sp_funcionarios
+WITH ENCRYPTION
+AS
+SELECT * FROM FUNCIONARIO;
+GO
+EXEC sp_help sp_funcionarios;
+
+--////
+CREATE PROCEDURE sp_dptLocalidade(@Departamento VARCHAR(50), @Localidade VARCHAR(100))
+AS
+BEGIN
+	IF EXISTS (
+		SELECT 1
+		FROM DEPARTAMENTO
+		WHERE Dnome = @Departamento
+		)
+	BEGIN
+		PRINT 'O departamento ja existe'
+	END
+	
+	ELSE
+	BEGIN
+		DECLARE @id_dpt INT, @id_loc INT;
+		SELECT @id_dpt = MAX(Dnumero)
+		FROM DEPARTAMENTO
+
+		INSERT INTO DEPARTAMENTO (Dnumero, Dnome)
+		VALUES (@id_dpt + 1, @Localidade)
+
+		INSERT INTO LOCALIZACAO_DEP(Dnumero, Dlocal)
+		VALUES (@id_dpt + 1, @Localidade)
+
+		PRINT @Depatamento + 'inserido com sucesso';
+		PRINT @Localidade + 'inserido com sucesso';
+	END
+END
+GO
+
+EXEC sp_dptLocalidade 'Compras', 'Santa Maria';
+```
+
 # Aula 6 - 04/09/2026
 ```sql
 -- CAST
