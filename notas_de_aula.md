@@ -19,6 +19,197 @@ COMMIT TRANSACTION: Confirma a transação, aplicando permanentemente todas as o
 ROLLBACK TRANSACTION: Desfaz todas as operações realizadas desde o início da transação
 SAVEPOINT: Define um ponto dentro de uma transação para permitir um rollback parcial, até esse ponto
 ```
+```sql
+CREATE DATABASE CAIXA;
+
+USE CAIXA;
+
+--Criação da nossa tabela
+CREATE TABLE conta(
+	id INT PRIMARY KEY,
+	Nome VARCHAR(50),
+	Saldo MONEY
+);
+
+INSERT INTO CONTA
+VALUES (10, 'Maria', 500),
+	   (20, 'João', 1500),
+	   (30, 'Paulo', 30000),
+	   (40, 'Maria', 50000);
+GO;
+
+-- Primeira transação	
+BEGIN TRAN;
+DECLARE @erro INT = 0;
+
+INSERT INTO CONTA
+VALUES (50, 'Pedro', 50);
+SET @erro = @erro+ @@ERROR
+
+INSERT INTO CONTA
+VALUES (10, 'Judas', 666);
+SET @erro = @erro+ @@ERROR
+SELECT * FROM CONTA;
+
+IF @erro <> 0
+BEGIN
+	PRINT 'Transação revertida;'
+	ROLLBACK TRAN;
+END 
+ELSE
+BEGIN
+	PRINT 'Transação realizada com sucesso!'
+	COMMIT TRAN;
+END
+
+SELECT * FROM CONTA
+GO;
+
+BEGIN TRAN;
+UPDATE conta
+SET Saldo = Saldo + 10000
+WHERE Nome = 'Maria';
+
+IF @@ROWCOUNT <> 1
+BEGIN
+	SELECT * FROM conta;
+	ROLLBACK TRAN;
+END
+ELSE
+	COMMIT TRAN;
+GO;
+
+-- Transferir dinheiro de uma pessoa para outra
+
+CREATE OR ALTER PROCEDURE sp_pix
+    (@id_origem INT, @id_destino INT, @Valor MONEY)
+AS
+BEGIN
+    BEGIN TRANSACTION;
+
+    DECLARE @Saldo MONEY;
+
+    SELECT @Saldo = Saldo
+    FROM conta
+    WHERE id = @id_origem;
+
+    IF (@Saldo < @Valor OR @Valor <= 0)
+    BEGIN
+        ROLLBACK TRANSACTION;
+        PRINT 'Erro no pix';
+    END
+    ELSE
+    BEGIN
+        UPDATE conta
+        SET Saldo = Saldo - @Valor
+        WHERE id = @id_origem;
+
+        UPDATE conta
+        SET Saldo = Saldo + @Valor
+        WHERE id = @id_destino;
+
+        COMMIT TRANSACTION;
+        PRINT 'Pix realizado';
+    END
+
+    SELECT * FROM conta;
+END;
+GO
+
+EXEC sp_pix 10, 20, 500;
+
+-- Save point
+BEGIN TRAN;
+INSERT INTO conta
+VALUES (50, 'Pedro', 50)
+
+-- Save POINT
+SAVE TRAN pedroOK
+INSERT INTO conta
+VALUES (10, 'Juca', -200);
+
+IF @@ERROR <> 0
+BEGIN
+    ROLLBACK TRAN pedroOK
+    COMMIT TRAN;
+    PRINT 'Voltamos para o save point';
+END
+ELSE
+    COMMIT TRAN;
+GO
+
+-- TRY CATCH
+BEGIN TRY
+   PRINT 'Olá TRY CATCH!'
+   SELECT 1/0; -- erro;
+   PRINT 'Não CHEGUEI AQUI!'
+END TRY
+BEGIN CATCH
+    PRINT 'DEU ERRO!'
+    PRINT 'Número: ' + CAST(ERROR_NUMBER() AS VARCHAR(10));
+    PRINT 'Mensagem de ERRO: ' + ERROR_MESSAGE();               
+END CATCH
+
+-- TRANSACTION + TRY CATCH
+BEGIN TRAN;
+    BEGIN TRY
+        INSERT INTO conta
+        VALUES (60, 'Mateus', 15)
+        SELECT * FROM conta
+
+        INSERT INTO conta
+        VALUES (10, 'Juca', -200);
+
+        COMMIT TRAN;
+        SELECT * FROM conta
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRAN;
+        PRINT 'DEU ERRO!'
+        PRINT 'Número: ' + CAST(ERROR_NUMBER() AS VARCHAR(10));
+        PRINT 'Mensagem de ERRO: ' + ERROR_MESSAGE();    
+    END CATCH
+SELECT * FROM conta;
+GO
+
+-- Inserir um novo usuário no banco (não permita nomes duplicados)
+DELETE 
+FROM conta
+WHERE id= '40';
+
+GO
+CREATE OR ALTER PROCEDURE sp_Inserir
+    (@id INT, @Nome VARCHAR(50), @Saldo MONEY)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        IF NOT EXISTS (SELECT 1 FROM conta WHERE Nome = @Nome)
+        BEGIN
+            INSERT INTO conta (id, Nome, Saldo)
+            VALUES (@id, @Nome, @Saldo);
+
+            COMMIT TRANSACTION;
+            PRINT 'Usuário inserido com sucesso!';
+        END
+        ELSE
+        BEGIN
+            ROLLBACK TRANSACTION;
+            PRINT 'Erro: já existe um usuário com esse nome.';
+        END
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+
+        PRINT 'Número do erro: ' + CAST(ERROR_NUMBER() AS VARCHAR(10));
+        PRINT 'Mensagem de erro: ' + ERROR_MESSAGE();
+    END CATCH
+END;
+GO
+EXEC sp_Inserir 100, 'Bruno', 10000;
+SELECT * FROM conta;
+```
 
 # Aula 7 - 11/09/2026
 ```sql
