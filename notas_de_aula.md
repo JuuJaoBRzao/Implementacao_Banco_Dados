@@ -13,10 +13,10 @@
 - Consistência: garante que uma transação leve o banco de dados de um estado válido para outro estado válido, respeitando todas as regras definidas.
 - Durabilidade: garante que, uma vez que uma transação é confirmada (committed), ela permanecerá no banco de dados, mesmo que ocorra uma falha no sistema. Os dados serão persistidos no armazenamento
 
-BEGIN TRANSACTION: Inicia uma nova transação
-COMMIT TRANSACTION: Confirma a transação, aplicando permanentemente todas as operações feitas no banco de dados
-ROLLBACK TRANSACTION: Desfaz todas as operações realizadas desde o início da transação
-SAVEPOINT: Define um ponto dentro de uma transação para permitir um rollback parcial, até esse ponto
+- BEGIN TRANSACTION: Inicia uma nova transação
+- COMMIT TRANSACTION: Confirma a transação, aplicando permanentemente todas as operações feitas no banco de dados
+- ROLLBACK TRANSACTION: Desfaz todas as operações realizadas desde o início da transação
+- SAVEPOINT: Define um ponto dentro de uma transação para permitir um rollback parcial, até esse ponto
 
 ```sql
 CREATE DATABASE CAIXA;
