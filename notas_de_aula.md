@@ -1,3 +1,25 @@
+# Aula 11 - 09/10/2026
+
+## Transaction ##
+
+- Uma transação é um conjunto de operações que são tratadas como uma única unidade de trabalho (inserções, atualizações...)
+- Uma transação precisa ser completamente concluída ou revertida para garantir que o banco de dados permaneça em um estado constante
+- Principal objetivo da transação é garantir a integridade e consistência dos dados, mesmo diante de falhas, como erros no sistema ou interrupções inesperadas
+
+## ACID ##
+
+- Atomicidade: garante que uma transação é tratada como uma única unidade, o que significa que ela deve ser completamente concluída ou totalmente desfeita. Se uma parte falhar, todo o resto também falha.
+- Isolamento: garante que as transações sejam executadas de forma isolada, sem que as operações de uma transação afetem as operações de outra. O nível de isolamento pode variar, afetando a visibilidade das mudanças feitas por transações concorrentes.
+- Consistência: garante que uma transação leve o banco de dados de um estado válido para outro estado válido, respeitando todas as regras definidas.
+- Durabilidade: garante que, uma vez que uma transação é confirmada (committed), ela permanecerá no banco de dados, mesmo que ocorra uma falha no sistema. Os dados serão persistidos no armazenamento
+
+```sql
+BEGIN TRANSACTION: Inicia uma nova transação
+COMMIT TRANSACTION: Confirma a transação, aplicando permanentemente todas as operações feitas no banco de dados
+ROLLBACK TRANSACTION: Desfaz todas as operações realizadas desde o início da transação
+SAVEPOINT: Define um ponto dentro de uma transação para permitir um rollback parcial, até esse ponto
+```
+
 # Aula 7 - 11/09/2026
 ```sql
 --FUNCTION
