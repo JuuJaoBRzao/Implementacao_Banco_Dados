@@ -204,8 +204,9 @@ ON F.Dnr = D.Dnumero;
 
 SELECT * FROM vw_rh_funcionario_dpt
 WHERE DEPARTAMENTO = 'Matriz';
-
 ```
+<img width="867" height="453" alt="image" src="https://github.com/user-attachments/assets/755a2059-e039-45bd-93b5-db1850fd5ea7" />
+
 
 # Aula 11 - 09/10/2026
 
