@@ -7,11 +7,11 @@
   - Procedural: Na forma procedural (também chamadas de restrições semânticas), é possível fazer uso de recursos como gatilhos (triggers), procedimentos armazenados (stored procedures), bem como de afirmações (assertion). Usada com auxílio das regras de negócio passadas pelos clientes.
  
 - As cinco principais restrições de Integridade são:
-● Integridade de Domínio;
-● Integridade Referencial;
-● Integridade de Vazio;
-● Integridade de Chave;
-● Integridade Definida pelo Usuário.
+  ● Integridade de Domínio;
+  ● Integridade Referencial;
+  ● Integridade de Vazio;
+  ● Integridade de Chave;
+  ● Integridade Definida pelo Usuário.
 
   ● Integridade de Domínio: As restrições de domínio especificam que, dentro de cada tupla, o valor de cada atributo Y deve ser um valor indivisível do domínio dom(Y), ou seja, se um atributo tiver que receber valores dentro de um intervalo pré-estabelecido para um domínio, ele só receberá valores dentro deste intervalo, caso contrário uma mensagem de erro aparecerá para o usuário para que ele possa ajustar os dados antes da entrada no banco de dados.
     - Valores inseridos em uma coluna devem sempre obedecer à definição dos valores que são permitidos para essa coluna – os valores do domínio.
