@@ -35,6 +35,114 @@
 ● Integridade Definida pelo Usuário: A integridade definida pelo usuário permite definir regras comerciais que não se encaixam em outras categorias de integridade. Todas as categorias de integridade oferecem suporte à integridade definida pelo usuário.
   - Esta integridade se refere a regras de negócio específicas que são definidas pelo usuário do banco de dados. Por exemplo, pode-se definir que uma coluna aceitará um conjunto restrito de valores.
 
+```sql
+CREATE DATABASE LOJA
+GO
+
+USE LOJA
+GO
+
+CREATE TABLE CATEGORIA(
+id INT PRIMARY KEY, 
+nome VARCHAR(60) NOT NULL
+CONSTRAINT uq_categoria_nome UNIQUE (NOME)
+);
+GO
+
+CREATE TABLE FORNECEDOR(
+id INT PRIMARY KEY, 
+nome VARCHAR(60) NOT NULL,
+telefone VARCHAR(20) NULL
+);
+GO
+
+CREATE TABLE PRODUTO (
+	id INT IDENTITY (100,1) PRIMARY KEY,
+	nome VARCHAR(80) NOT NULL,
+	preco DECIMAL(10,2) NOT NULL,
+	quantidade INT NOT NULL CONSTRAINT df_prod_qtd DEFAULT 0,
+	situacao VARCHAR(10) NOT NULL DEFAULT 'Ativo',
+	id_categoria INT NOT NULL, 
+	id_fornecedor INT NULL,
+
+	CONSTRAINT ck_prod_preco CHECK(preco > 0),
+	CONSTRAINT ck_prod_qtd CHECK (quantidade >= 0),
+	CONSTRAINT ck_prod_situacao CHECK (situacao IN ('Ativo', 'Inativo')),
+
+	CONSTRAINT fk_prod_categoria 
+		FOREIGN KEY (id_categoria) REFERENCES CATEGORIA(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
+
+-- Adicionar uma restrição
+ALTER TABLE PRODUTO
+ADD CONSTRAINT fk_prod_fornecedor
+	FOREIGN KEY (id_fornecedor) REFERENCES FORNECEDOR (id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE;
+
+-- Inserir alguns valores
+INSERT INTO CATEGORIA(id, nome) VALUES
+	(10, 'Informática'),
+	(20, 'Papelaria'),
+	(30, 'Acessorios');
+
+INSERT INTO FORNECEDOR (id, nome, telefone) VALUES
+	(1, 'Distribuidor Alfa', '5555-6666'),
+	(2, 'Comercial Ltda', NULL);
+
+INSERT INTO PRODUTO
+	(nome, preco, quantidade, situacao, id_categoria, id_fornecedor)
+VALUES
+	('Mouse sem fio', 79.99, 15, 'Ativo', 10, 1),
+	('Teclado USB', 120, 8, 'Ativo', 10, 2),
+	('Caderno', 29.90, 50, 'Ativo', 20, 1),
+	('Caneta', 4.50, 100, 'Ativo', 20, 2);
+
+INSERT INTO PRODUTO
+	(nome, preco, id_categoria)
+VALUES
+	('Fone de ouvido', 99.99, 30);
+
+SELECT * FROM PRODUTO;
+SELECT * FROM CATEGORIA;
+
+-- ON UPDATE CASCADE
+UPDATE CATEGORIA
+SET id = 11
+WHERE id = 10;
+
+-- ON DELETE SET NULL
+DELETE FROM FORNECEDOR
+WHERE id = 1;
+
+-- ON DELETE CASCADE
+DELETE FROM CATEGORIA
+WHERE id = 20;
+GO
+
+CREATE VIEW vw_listagem_geral_prod
+AS
+
+SELECT 
+	P.nome AS 'Produto',
+	P.quantidade AS 'Quantidade',
+	P.situacao AS 'Situacao',
+	F.nome AS 'Fornecedor',
+	F.telefone AS 'Tel.Fornecedor',
+	C.nome AS 'Categoria'
+FROM PRODUTO AS P
+LEFT JOIN FORNECEDOR AS F
+ON P.id_fornecedor = F.id
+JOIN CATEGORIA AS C
+ON P.id_categoria = C.id
+GO
+SELECT * FROM vw_listagem_geral_prod
+WHERE Quantidade > 0 ORDER BY
+```
+
+
 # Aula 12 - 23/10/2026
 - Novo banco: [Link do banco](https://github.com/Herysson/Implementacao-de-Banco-de-Dados/blob/main/EMPRESA_2026.sql)
 
