@@ -1,3 +1,40 @@
+# Aula 13 - 30/10/2026
+## Restrições de integridade: 
+- É a manutenção e garantia de consistência e precisão dos dados, usando-as para atingir a integridade.
+
+- Tipos:
+  - Declarativa: Na forma declarativa, as restrições de integridade são parametrizadas durante a criação das estruturas das tabelas, fazendo uso de chaves primárias (PK), impedindo valores não nulos, utilizando tipos e domínios de dados e aplicando regras de    integridade referencial.
+  - Procedural: Na forma procedural (também chamadas de restrições semânticas), é possível fazer uso de recursos como gatilhos (triggers), procedimentos armazenados (stored procedures), bem como de afirmações (assertion). Usada com auxílio das regras de negócio passadas pelos clientes.
+ 
+- As cinco principais restrições de Integridade são:
+● Integridade de Domínio;
+● Integridade Referencial;
+● Integridade de Vazio;
+● Integridade de Chave;
+● Integridade Definida pelo Usuário.
+
+  ● Integridade de Domínio: As restrições de domínio especificam que, dentro de cada tupla, o valor de cada atributo Y deve ser um valor indivisível do domínio dom(Y), ou seja, se um atributo tiver que receber valores dentro de um intervalo pré-estabelecido para um domínio, ele só receberá valores dentro deste intervalo, caso contrário uma mensagem de erro aparecerá para o usuário para que ele possa ajustar os dados antes da entrada no banco de dados.
+    - Valores inseridos em uma coluna devem sempre obedecer à definição dos valores que são permitidos para essa coluna – os valores do domínio.
+    - Fatores
+		● Tipo de Dado do campo;
+		● Representação interna do tipo de dado;
+		● Presença ou não do dado;
+		● Intervalos de valores no domínio;
+		● Conjunto de valores discretos.
+
+ ● Integridade Referencial: A restrição de Integridade Referencial assegura que valores de uma coluna em um tabela são válidos baseados nos valores em uma outra tabela relacionada.
+    - Se um registro for excluído em uma tabela, então os registros relacionados em outras tabelas que o referenciam talvez precisem ser excluídos. Caso contrário ocorrerá erro. O mesmo se dá com atualização de registros
+    - CASCADE: Se um registro for excluído em uma tabela (operações DELETE e TRUNCATE), então os registros relacionados em outras tabelas que o referenciam talvez precisem ser excluídos. Caso contrário ocorrerá erro. O mesmo se dá com a atualização de registros (operação UPDATE). 
+	-  on delete cascade;
+    -  on update cascade.
+
+● Integridade de Vazio: Este tipo de integridade informa se a coluna é obrigatória ou opcional, ou seja, se é possível não inserir um valor na coluna. Uma coluna de chave primária, por exemplo, sempre deve ter dados inseridos, e nunca pode estar vazia para nenhum registro.
+
+● Integridade de Chave: Os valores inseridos na coluna de chave primária (PK) devem ser sempre únicos, não admitindo-se repetições nesses valores. Desta forma, as tuplas (registros) serão sempre distintas. Os valores de chave primária também não podem ser nulos.
+
+● Integridade Definida pelo Usuário: A integridade definida pelo usuário permite definir regras comerciais que não se encaixam em outras categorias de integridade. Todas as categorias de integridade oferecem suporte à integridade definida pelo usuário.
+  - Esta integridade se refere a regras de negócio específicas que são definidas pelo usuário do banco de dados. Por exemplo, pode-se definir que uma coluna aceitará um conjunto restrito de valores.
+
 # Aula 12 - 23/10/2026
 - Novo banco: [Link do banco](https://github.com/Herysson/Implementacao-de-Banco-de-Dados/blob/main/EMPRESA_2026.sql)
 
