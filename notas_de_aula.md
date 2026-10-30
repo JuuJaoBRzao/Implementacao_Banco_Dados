@@ -22,8 +22,7 @@
 		- Intervalos de valores no domínio;
 		- Conjunto de valores discretos.
 
- ● Integridade Referencial: A restrição de Integridade Referencial assegura que valores de uma coluna em um tabela são válidos baseados nos valores em uma outra tabela relacionada.
-    - Se um registro for excluído em uma tabela, então os registros relacionados em outras tabelas que o referenciam talvez precisem ser excluídos. Caso contrário ocorrerá erro. O mesmo se dá com atualização de registros
+ ● Integridade Referencial: A restrição de Integridade Referencial assegura que valores de uma coluna em um tabela são válidos baseados nos valores em uma outra tabela relacionada. Se um registro for excluído em uma tabela, então os registros relacionados em outras tabelas que o referenciam talvez precisem ser excluídos. Caso contrário ocorrerá erro. O mesmo se dá com atualização de registros.
     - CASCADE: Se um registro for excluído em uma tabela (operações DELETE e TRUNCATE), então os registros relacionados em outras tabelas que o referenciam talvez precisem ser excluídos. Caso contrário ocorrerá erro. O mesmo se dá com a atualização de registros (operação UPDATE). 
 	-  on delete cascade;
     -  on update cascade.
