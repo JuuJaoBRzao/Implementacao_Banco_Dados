@@ -140,6 +140,70 @@ ON P.id_categoria = C.id
 GO
 SELECT * FROM vw_listagem_geral_prod
 WHERE Quantidade > 0 ORDER BY
+
+|||||||||||||||||||
+
+-- Revisão Prova
+SELECT * FROM LivroAutor;
+
+SELECT COUNT(fk_livro)
+FROM LivroAutor
+WHERE fk_autor = 1;
+GO;
+
+CREATE TRIGGER trg_for_insert_la
+ON LivroAutor
+AFTER INSERT
+AS
+BEGIN
+	DECLARE @id_autor INT, @qtd_livros INT, @nomr_autor VARCHAR (100);
+
+	SELECT @id_autor = I.fk_autor
+	FROM inserted AS I
+
+	SELECT @qtd_livros = COUNT(fk_livro)
+	FROM LivroAutor
+	WHERE fk_autor = @id_autor;
+
+	SELECT *
+	FROM Autor AS A
+	WHERE A.id = @id_autor
+
+	PRINT 'Este autor' +@nome_autor + 'escreveu : '+CAST(@qtd_livros AS VARCHAR(10)) + ' livros';
+END
+
+INSERT INTO Livro
+VALUES ('47852447', 'Harry Potter e a Camara Secreta', 2000, 1, 1),
+	   ('47852447', 'Harry Potter e a Reliquias da Morte', 2000, 1, 1);
+INSERT INTO LivroAutor
+(1, '47852447');
+
+CREATE TRIGGER trg_nome
+ON LIVRO
+INSTEAD OF UPDATE
+AS
+BEGIN
+	RAISERROR('ISBN n pode ser alterado', 16, 1);
+END
+GO
+
+CREATE TRIGGER trg_restringirISBN
+ON LIVRO
+INSTEAD OF UPDATE
+AS
+BEGIN
+	RAISERROR('ISBN não pode ser alterado', 16, 1);
+END
+
+IF (SELECT COUNT(*) FROM Livro AS L
+JOIN Categoria AS C
+ON L.fk_categoria = C.id
+WHERE C.id =11 > 5
+PRINT 'TEM MAIS QUE 5 LIVROS'
+
+ELSE
+PRINT 'TEM MENOS QUE 5 LIVROS'
+
 ```
 
 
