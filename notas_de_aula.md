@@ -7,20 +7,20 @@
   - Procedural: Na forma procedural (também chamadas de restrições semânticas), é possível fazer uso de recursos como gatilhos (triggers), procedimentos armazenados (stored procedures), bem como de afirmações (assertion). Usada com auxílio das regras de negócio passadas pelos clientes.
  
 - As cinco principais restrições de Integridade são:
-  ● Integridade de Domínio;
-  ● Integridade Referencial;
-  ● Integridade de Vazio;
-  ● Integridade de Chave;
-  ● Integridade Definida pelo Usuário.
+  - Integridade de Domínio;
+  - Integridade Referencial;
+  - Integridade de Vazio;
+  - Integridade de Chave;
+  - Integridade Definida pelo Usuário.
 
   ● Integridade de Domínio: As restrições de domínio especificam que, dentro de cada tupla, o valor de cada atributo Y deve ser um valor indivisível do domínio dom(Y), ou seja, se um atributo tiver que receber valores dentro de um intervalo pré-estabelecido para um domínio, ele só receberá valores dentro deste intervalo, caso contrário uma mensagem de erro aparecerá para o usuário para que ele possa ajustar os dados antes da entrada no banco de dados.
     - Valores inseridos em uma coluna devem sempre obedecer à definição dos valores que são permitidos para essa coluna – os valores do domínio.
     - Fatores
-		● Tipo de Dado do campo;
-		● Representação interna do tipo de dado;
-		● Presença ou não do dado;
-		● Intervalos de valores no domínio;
-		● Conjunto de valores discretos.
+		- Tipo de Dado do campo;
+		- Representação interna do tipo de dado;
+		- Presença ou não do dado;
+		- Intervalos de valores no domínio;
+		- Conjunto de valores discretos.
 
  ● Integridade Referencial: A restrição de Integridade Referencial assegura que valores de uma coluna em um tabela são válidos baseados nos valores em uma outra tabela relacionada.
     - Se um registro for excluído em uma tabela, então os registros relacionados em outras tabelas que o referenciam talvez precisem ser excluídos. Caso contrário ocorrerá erro. O mesmo se dá com atualização de registros
